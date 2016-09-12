@@ -23,7 +23,7 @@ namespace ReadXML
         public class Transition
         {
             public string From { get; set; }
-            public string TO { get; set; }
+            public string To { get; set; }
             public string Group { get; set; }
         }
         public Form1()
@@ -92,7 +92,7 @@ namespace ReadXML
 
                 Transition tr = new Transition();
                 tr.From = edg.Attributes["source"].Value;
-                tr.TO = edg.Attributes["target"].Value;
+                tr.To = edg.Attributes["target"].Value;
                 tr.Group = group_id.InnerText.ToString();
                 transition_lists.Add(tr);
                 listBox1.Items.Add("Source: " + edg.Attributes["source"].Value + " " + "Target: " + edg.Attributes["target"].Value);
