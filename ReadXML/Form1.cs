@@ -52,20 +52,20 @@ namespace ReadXML
 
             //Node
             int i = 0;
-            foreach (XmlNode cvor in doc.SelectNodes("/*[local-name()='graphml' and namespace-uri()='http://graphml.graphdrawing.org/xmlns']/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='node' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*", ns))//ovo su svi nodovi
+            foreach (XmlNode cvor in doc.SelectNodes("/ns1:graphml/ns1:graph[1]/ns1:node[1]/ns1:graph[1]/*", ns))//ovo su svi nodovi
             {
                 State st = new State();
 
                 //Lista svih descritiona
                 List< string > description_lists = new List<string>();
-                foreach (XmlNode data in cvor.SelectNodes("/*[local-name()='graphml' and namespace-uri()='http://graphml.graphdrawing.org/xmlns']/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='node' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]//*[local-name()='node' and namespace-uri()='http://graphml.graphdrawing.org/xmlns']/*[local-name()='data' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][@key='d5']",ns))
+                foreach (XmlNode data in cvor.SelectNodes("//ns1:data[@key='d5']", ns))
                 {
                     description_lists.Add(data.InnerText);                   
                 }
 
                 //lista svih id-ova nodova
                 List<string> id_lists = new List<string>();
-                foreach (XmlNode data in cvor.SelectNodes("/*[local-name()='graphml' and namespace-uri()='http://graphml.graphdrawing.org/xmlns']/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='node' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]//*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*", ns))
+                foreach (XmlNode data in cvor.SelectNodes("/ns1:graphml/ns1:graph[1]/ns1:node[1]/ns1:graph[1]/*", ns))
                 {
                     id_lists.Add(data.Attributes["id"].Value);
                 }
@@ -88,13 +88,14 @@ namespace ReadXML
             List<Transition> transition_lists = new List<Transition>();
             foreach (XmlNode edg in doc.SelectNodes("//ns1:edge[@source][@target]", ns))
             {
-                XmlNode group_id = edg.SelectSingleNode("/*[local-name()='graphml' and namespace-uri()='http://graphml.graphdrawing.org/xmlns']/*[local-name()='graph' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/*[local-name()='node' and namespace-uri()='http://graphml.graphdrawing.org/xmlns'][1]/@id", ns);
+                XmlNode group_id = edg.SelectSingleNode("/ns1:graphml/ns1:graph[1]/ns1:node[1]/@id", ns);
 
                 Transition tr = new Transition();
                 tr.From = edg.Attributes["source"].Value;
                 tr.To = edg.Attributes["target"].Value;
                 tr.Group = group_id.InnerText.ToString();
                 transition_lists.Add(tr);
+
                 listBox1.Items.Add("Source: " + edg.Attributes["source"].Value + " " + "Target: " + edg.Attributes["target"].Value);
             }
         }
