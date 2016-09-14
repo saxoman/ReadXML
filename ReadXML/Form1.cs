@@ -15,88 +15,62 @@ namespace ReadXML
     {
         public class State
         {
-            public string ID{ get; set; }
+            public string ID { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
 
         }
         public class Transition
         {
-            public string From { get; set; }
-            public string To { get; set; }
+            public State From { get; set; }
+            public State To { get; set; }
             public string Group { get; set; }
         }
         public Form1()
         {
             InitializeComponent();
         }
-        int i = 0;
         private void button1_Click(object sender, EventArgs e)
         {
             List<State> state_list = new List<State>();
-            
-            
-            
-           listBox1.Items.Clear();
+
+            listBox1.Items.Clear();
             XmlDocument doc = new XmlDocument();
             doc.Load("XMLFile1.xml");
 
             XmlNamespaceManager ns = new XmlNamespaceManager(doc.NameTable);
             ns.AddNamespace("ns1", "http://graphml.graphdrawing.org/xmlns");
 
-            var id_node = "/ns1:graphml/ns1:key[@for='node' and @attr.name='description']/@id";
-            var id_edge = "/ns1:graphml/ns1:key[@for='edge' and @attr.name='description']/@id";
+             var key_description_node_id = "/ns1:graphml/ns1:key[@for='node' and @attr.name='description']/@id";
+            //// var id_edge = "/ns1:graphml/ns1:key[@for='edge' and @attr.name='description']/@id";
+             string idn = doc.SelectSingleNode(key_description_node_id, ns).Value;// id node.description = d5
+             //string ide= doc.SelectSingleNode(id_node, ns).Value;// id node.description = d9
 
-            string idn = doc.SelectSingleNode(id_node,ns).Value;// id node.description = d5
-            string ide= doc.SelectSingleNode(id_node, ns).Value;// id node.description = d9
-
-            //Node
-            int i = 0;
-            foreach (XmlNode cvor in doc.SelectNodes("/ns1:graphml/ns1:graph[1]/ns1:node[1]/ns1:graph[1]/*", ns))//ovo su svi nodovi
+            List<State> transition_lists = new List<State>();
+       
+            foreach (XmlNode edg in doc.SelectNodes("//ns1:edge", ns))
             {
-                State st = new State();
+                //XmlNode group_id = edg.SelectSingleNode("/ns1:graphml/ns1:graph[1]/ns1:node[1]/@id", ns);
+              
+                Transition tr = new Transition();
+                State stateFrom = new State();
+            
+                stateFrom.ID = edg.Attributes["source"].Value;//n0:n0
+                var fa = stateFrom.ID;
+                XmlNode node = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]", ns);//nodovi sa id-om n0::n1...
+                stateFrom.Name = node.InnerText;
 
-                //Lista svih descritiona
-                List< string > description_lists = new List<string>();
-                foreach (XmlNode data in cvor.SelectNodes("//ns1:data[@key='d5']", ns))
-                {
-                    description_lists.Add(data.InnerText);                   
-                }
-
-                //lista svih id-ova nodova
-                List<string> id_lists = new List<string>();
-                foreach (XmlNode data in cvor.SelectNodes("/ns1:graphml/ns1:graph[1]/ns1:node[1]/ns1:graph[1]/*", ns))
-                {
-                    id_lists.Add(data.Attributes["id"].Value);
-                }
-
-
-                st.ID = id_lists.ElementAt(i);
-                st.Name = cvor.InnerText;
-                st.Description=description_lists.ElementAt(i);
-
-                state_list.Add(st);
-                //////////////////////////
-                string description = description_lists.ElementAt(i);
-                listBox1.Items.Add(cvor.InnerText);
-               // listBox1.Items.Add("X - Koordinata: " + x+ " " + "Y - Koordinata: " + y +" Širina: " + width + " Visina: " + height+ " Description:"+ description);         
-                i++;
+                XmlNode data = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]/ns1:data[@key=\""+idn+"\"]", ns);
+      
+                stateFrom.Description = data.InnerText;
+                tr.From = stateFrom;
+               
+                transition_lists.Add(tr.From);
             }
 
-            //Edge
-           
-            List<Transition> transition_lists = new List<Transition>();
-            foreach (XmlNode edg in doc.SelectNodes("//ns1:edge[@source][@target]", ns))
+            foreach (var listBoxItem in transition_lists)
             {
-                XmlNode group_id = edg.SelectSingleNode("/ns1:graphml/ns1:graph[1]/ns1:node[1]/@id", ns);
-
-                Transition tr = new Transition();
-                tr.From = edg.Attributes["source"].Value;
-                tr.To = edg.Attributes["target"].Value;
-                tr.Group = group_id.InnerText.ToString();
-                transition_lists.Add(tr);
-
-                listBox1.Items.Add("Source: " + edg.Attributes["source"].Value + " " + "Target: " + edg.Attributes["target"].Value);
+                listBox1.Items.Add("ID: " + listBoxItem.ID + " Name: " + listBoxItem.Name + " Description: " + listBoxItem.Description);
             }
         }
     }
