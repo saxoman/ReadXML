@@ -46,7 +46,7 @@ namespace ReadXML
              string idn = doc.SelectSingleNode(key_description_node_id, ns).Value;// id node.description = d5
              //string ide= doc.SelectSingleNode(id_node, ns).Value;// id node.description = d9
 
-            List<State> transition_lists = new List<State>();
+            List<Transition> transition_lists = new List<Transition>();
        
             foreach (XmlNode edg in doc.SelectNodes("//ns1:edge", ns))
             {
@@ -54,23 +54,32 @@ namespace ReadXML
               
                 Transition tr = new Transition();
                 State stateFrom = new State();
-            
-                stateFrom.ID = edg.Attributes["source"].Value;//n0:n0
-                var fa = stateFrom.ID;
-                XmlNode node = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]", ns);//nodovi sa id-om n0::n1...
-                stateFrom.Name = node.InnerText;
+                State stateTO = new State();
 
-                XmlNode data = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]/ns1:data[@key=\""+idn+"\"]", ns);
-      
-                stateFrom.Description = data.InnerText;
+                //State form
+                stateFrom.ID = edg.Attributes["source"].Value;//n0:n0
+                XmlNode node_from = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]", ns);//nodovi sa id-om n0::n1...
+                stateFrom.Name = node_from.InnerText;
+                XmlNode data_from = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]/ns1:data[@key=\""+idn+"\"]", ns);
+                stateFrom.Description = data_from.InnerText;
                 tr.From = stateFrom;
-               
-                transition_lists.Add(tr.From);
+
+                //StateTO
+                stateTO.ID = edg.Attributes["target"].Value;//n0:n0
+                XmlNode node_to = doc.SelectSingleNode("//ns1:node[@id=\"" + stateFrom.ID + "\"]", ns);
+                stateTO.Name = node_to.InnerText;
+                XmlNode data_to = doc.SelectSingleNode("//ns1:node[@id=\"" + stateTO.ID + "\"]/ns1:data[@key=\"" + idn + "\"]", ns);
+                stateTO.Description = data_to.InnerText;
+                tr.To = stateTO;
+
+                transition_lists.Add(tr);
+               // transition_lists.Add(tr.From);
             }
 
             foreach (var listBoxItem in transition_lists)
             {
-                listBox1.Items.Add("ID: " + listBoxItem.ID + " Name: " + listBoxItem.Name + " Description: " + listBoxItem.Description);
+                listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description + "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);
+               
             }
         }
     }
