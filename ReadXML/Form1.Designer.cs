@@ -32,17 +32,17 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataReasonGridView = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataTransitionGridView = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataStateGridView = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataReasonGridView)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataTransitionGridView)).BeginInit();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataStateGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,10 +71,11 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(13, 13);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(774, 438);
+            this.tabControl1.Size = new System.Drawing.Size(804, 438);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -83,10 +84,19 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(766, 412);
+            this.tabPage1.Size = new System.Drawing.Size(796, 412);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ChangeReason";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // dataReasonGridView
+            // 
+            this.dataReasonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataReasonGridView.Location = new System.Drawing.Point(-4, 0);
+            this.dataReasonGridView.Name = "dataReasonGridView";
+            this.dataReasonGridView.Size = new System.Drawing.Size(800, 377);
+            this.dataReasonGridView.TabIndex = 0;
+            this.dataReasonGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataReasonGridView_CellValueChanged);
             // 
             // tabPage2
             // 
@@ -94,44 +104,39 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(766, 412);
+            this.tabPage2.Size = new System.Drawing.Size(796, 412);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Transition";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataTransitionGridView
+            // 
+            this.dataTransitionGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataTransitionGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataTransitionGridView.Location = new System.Drawing.Point(3, 3);
+            this.dataTransitionGridView.Name = "dataTransitionGridView";
+            this.dataTransitionGridView.Size = new System.Drawing.Size(790, 406);
+            this.dataTransitionGridView.TabIndex = 0;
+            this.dataTransitionGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataTransitionGridView_CellValueChanged);
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.dataStateGridView);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(766, 412);
+            this.tabPage3.Size = new System.Drawing.Size(796, 412);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "State";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // dataReasonGridView
-            // 
-            this.dataReasonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataReasonGridView.Location = new System.Drawing.Point(6, 35);
-            this.dataReasonGridView.Name = "dataReasonGridView";
-            this.dataReasonGridView.Size = new System.Drawing.Size(754, 377);
-            this.dataReasonGridView.TabIndex = 0;
-            // 
-            // dataTransitionGridView
-            // 
-            this.dataTransitionGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataTransitionGridView.Location = new System.Drawing.Point(4, 31);
-            this.dataTransitionGridView.Name = "dataTransitionGridView";
-            this.dataTransitionGridView.Size = new System.Drawing.Size(762, 378);
-            this.dataTransitionGridView.TabIndex = 0;
-            // 
             // dataStateGridView
             // 
             this.dataStateGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataStateGridView.Location = new System.Drawing.Point(0, 35);
+            this.dataStateGridView.Location = new System.Drawing.Point(0, 0);
             this.dataStateGridView.Name = "dataStateGridView";
-            this.dataStateGridView.Size = new System.Drawing.Size(766, 374);
+            this.dataStateGridView.Size = new System.Drawing.Size(800, 374);
             this.dataStateGridView.TabIndex = 0;
+            this.dataStateGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataStateGridView_CellValueChanged);
             // 
             // Form1
             // 
@@ -143,12 +148,14 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "XMLReader";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataReasonGridView)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataTransitionGridView)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataStateGridView)).EndInit();
             this.ResumeLayout(false);
 

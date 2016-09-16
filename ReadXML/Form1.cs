@@ -16,7 +16,14 @@ namespace ReadXML
     
     public partial class Form1 : Form
     {
-       
+        private SqlDataAdapter adapterState;
+        private SqlDataAdapter adapterTransition;
+        private SqlDataAdapter adapterChangeReason;
+        private SqlCommandBuilder builder;
+        private DataSet ds;
+        private SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
+
+
         public class State
         {
             public string ID { get; set; }
@@ -33,22 +40,7 @@ namespace ReadXML
         public Form1()
         {
             InitializeComponent();
-            SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
-            cn.Open();
-
-            SqlDataAdapter adapterState = new SqlDataAdapter("Select * from state",cn);
-            SqlDataAdapter adapterTransition = new SqlDataAdapter("Select * from Transition",cn);
-            SqlDataAdapter adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
-
-            SqlCommandBuilder builder = new SqlCommandBuilder(adapterState);
-            DataSet ds = new DataSet();
-            adapterState.Fill(ds,"State");
-            adapterTransition.Fill(ds, "Transition");
-            adapterChangeReason.Fill(ds, "ChangeReason");
-
-            dataStateGridView.DataSource = ds.Tables[0];
-            dataTransitionGridView.DataSource = ds.Tables[1];
-            dataReasonGridView.DataSource = ds.Tables[2];
+            
 
         }
         private void button1_Click(object sender, EventArgs e)
@@ -101,6 +93,96 @@ namespace ReadXML
             {
                 listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description +"               "+ "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);
                
+            }
+        }
+
+        private void dataStateGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    Validate();
+                    dataStateGridView.EndEdit();
+                    adapterState.Update(ds.Tables[0]); 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (cn.State == ConnectionState.Open)
+            {
+                cn.Close();
+            }
+             cn.Open();
+
+            adapterState = new SqlDataAdapter("Select * from state", cn);
+            adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
+            adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
+
+            builder = new SqlCommandBuilder(adapterState);
+            ds = new DataSet();
+            adapterState.Fill(ds, "State");
+            adapterTransition.Fill(ds, "Transition");
+            adapterChangeReason.Fill(ds, "ChangeReason");
+
+            dataStateGridView.DataSource = ds.Tables["State"];
+            dataTransitionGridView.DataSource = ds.Tables["Transition"];
+            dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
+           
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (cn != null)
+            {
+                cn.Close();
+            }
+        }
+
+        private void dataTransitionGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand("Select * from Transition", cn);
+                    adapterTransition.SelectCommand = command;
+                    SqlCommandBuilder cb = new SqlCommandBuilder(adapterTransition);
+                    Validate();
+                    dataTransitionGridView.EndEdit();
+                    adapterTransition.Update(ds.Tables[1]);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+        }
+
+        private void dataReasonGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand("Select * from ChangeReason", cn);
+                    adapterChangeReason.SelectCommand = command;
+                    SqlCommandBuilder cb = new SqlCommandBuilder(adapterChangeReason);
+                    Validate();
+                    dataReasonGridView.EndEdit();
+                    adapterChangeReason.Update(ds.Tables[2]);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }
