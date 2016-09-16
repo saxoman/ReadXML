@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,11 @@ using System.Xml;
 
 namespace ReadXML
 {
+   
+    
     public partial class Form1 : Form
     {
+       
         public class State
         {
             public string ID { get; set; }
@@ -29,9 +33,27 @@ namespace ReadXML
         public Form1()
         {
             InitializeComponent();
+            SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
+            cn.Open();
+
+            SqlDataAdapter adapterState = new SqlDataAdapter("Select * from state",cn);
+            SqlDataAdapter adapterTransition = new SqlDataAdapter("Select * from Transition",cn);
+            SqlDataAdapter adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
+
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapterState);
+            DataSet ds = new DataSet();
+            adapterState.Fill(ds,"State");
+            adapterTransition.Fill(ds, "Transition");
+            adapterChangeReason.Fill(ds, "ChangeReason");
+
+            dataStateGridView.DataSource = ds.Tables[0];
+            dataTransitionGridView.DataSource = ds.Tables[1];
+            dataReasonGridView.DataSource = ds.Tables[2];
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            
             List<State> state_list = new List<State>();
 
             listBox1.Items.Clear();
@@ -73,12 +95,11 @@ namespace ReadXML
                 tr.To = stateTO;
 
                 transition_lists.Add(tr);
-               // transition_lists.Add(tr.From);
             }
 
             foreach (var listBoxItem in transition_lists)
             {
-                listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description + "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);
+                listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description +"               "+ "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);
                
             }
         }
