@@ -91,8 +91,11 @@
             // 
             // dataReasonGridView
             // 
+            this.dataReasonGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataReasonGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataReasonGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataReasonGridView.Location = new System.Drawing.Point(-4, 0);
+            this.dataReasonGridView.Location = new System.Drawing.Point(3, 3);
             this.dataReasonGridView.Name = "dataReasonGridView";
             this.dataReasonGridView.Size = new System.Drawing.Size(800, 377);
             this.dataReasonGridView.TabIndex = 0;
@@ -111,11 +114,13 @@
             // 
             // dataTransitionGridView
             // 
+            this.dataTransitionGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataTransitionGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataTransitionGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataTransitionGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataTransitionGridView.Location = new System.Drawing.Point(3, 3);
             this.dataTransitionGridView.Name = "dataTransitionGridView";
-            this.dataTransitionGridView.Size = new System.Drawing.Size(790, 406);
+            this.dataTransitionGridView.Size = new System.Drawing.Size(800, 377);
             this.dataTransitionGridView.TabIndex = 0;
             this.dataTransitionGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataTransitionGridView_CellValueChanged);
             // 
@@ -131,10 +136,13 @@
             // 
             // dataStateGridView
             // 
+            this.dataStateGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataStateGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataStateGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataStateGridView.Location = new System.Drawing.Point(0, 0);
+            this.dataStateGridView.Location = new System.Drawing.Point(3, 3);
             this.dataStateGridView.Name = "dataStateGridView";
-            this.dataStateGridView.Size = new System.Drawing.Size(800, 374);
+            this.dataStateGridView.Size = new System.Drawing.Size(800, 377);
             this.dataStateGridView.TabIndex = 0;
             this.dataStateGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataStateGridView_CellValueChanged);
             // 

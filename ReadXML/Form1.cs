@@ -115,11 +115,8 @@ namespace ReadXML
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (cn.State == ConnectionState.Open)
-            {
-                cn.Close();
-            }
-             cn.Open();
+          
+            cn.Open();
 
             adapterState = new SqlDataAdapter("Select * from state", cn);
             adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
@@ -134,7 +131,6 @@ namespace ReadXML
             dataStateGridView.DataSource = ds.Tables["State"];
             dataTransitionGridView.DataSource = ds.Tables["Transition"];
             dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
-           
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
