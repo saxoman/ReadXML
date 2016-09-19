@@ -12,16 +12,52 @@ using System.Xml;
 
 namespace ReadXML
 {
-   
     
+
     public partial class Form1 : Form
     {
-        private SqlDataAdapter adapterState;
-        private SqlDataAdapter adapterTransition;
-        private SqlDataAdapter adapterChangeReason;
-        private SqlCommandBuilder builder;
-        private DataSet ds;
-        private SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
+        public DataGridView[] dgv;
+        public static class ProcessDAO
+        {
+            public static SqlDataAdapter adapterState { get; set; }
+            public static SqlDataAdapter adapterTransition { get; set; }
+            public static SqlDataAdapter adapterChangeReason { get; set; }
+            public static SqlCommandBuilder builder { get; set; }
+            public static DataSet ds { get; set; }
+            public static SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
+            public static SqlDataAdapter[] adapter_array;
+
+            public static DataSet getProcesData()
+            {
+                cn.Open();
+                adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
+                adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
+                adapterState = new SqlDataAdapter("Select * from state", cn);
+
+                builder = new SqlCommandBuilder(adapterState);
+                ds = new DataSet();
+
+                adapterChangeReason.Fill(ds, "ChangeReason");
+                adapterTransition.Fill(ds, "Transition");
+                adapterState.Fill(ds, "State");
+
+                cn.Close();
+                return ds;
+
+            }
+            public static void saveProcesData()
+            {
+                int i = 0;
+                foreach (SqlDataAdapter sa in adapter_array)
+                {  
+                    SqlCommandBuilder builder = new SqlCommandBuilder(sa);
+                    sa.UpdateCommand = builder.GetUpdateCommand();
+                    sa.Update(ds.Tables[i]);   
+                    i++;
+                }
+                ds.AcceptChanges();
+            }
+        }
 
 
         public class State
@@ -40,9 +76,8 @@ namespace ReadXML
         public Form1()
         {
             InitializeComponent();
-            
-
         }
+        
         private void button1_Click(object sender, EventArgs e)
         {
             
@@ -88,99 +123,43 @@ namespace ReadXML
 
                 transition_lists.Add(tr);
             }
-
             foreach (var listBoxItem in transition_lists)
             {
-                listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description +"               "+ "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);
-               
-            }
-        }
-
-        private void dataStateGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                try
-                {
-                    Validate();
-                    dataStateGridView.EndEdit();
-                    adapterState.Update(ds.Tables[0]); 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                listBox1.Items.Add("ID: " + listBoxItem.From.ID + " Name: " + listBoxItem.From.Name + " Description: " + listBoxItem.From.Description +"               "+ "ID: " + listBoxItem.To.ID + " Name: " + listBoxItem.To.Name + " Description: " + listBoxItem.To.Description);  
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-          
-            cn.Open();
-
-            adapterState = new SqlDataAdapter("Select * from state", cn);
-            adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
-            adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
-
-            builder = new SqlCommandBuilder(adapterState);
-            ds = new DataSet();
-            adapterState.Fill(ds, "State");
-            adapterTransition.Fill(ds, "Transition");
-            adapterChangeReason.Fill(ds, "ChangeReason");
-
+            DataSet ds= ProcessDAO.getProcesData();
             dataStateGridView.DataSource = ds.Tables["State"];
             dataTransitionGridView.DataSource = ds.Tables["Transition"];
             dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
+            dgv = new DataGridView[] { dataReasonGridView, dataTransitionGridView, dataStateGridView };
+            ProcessDAO.adapter_array = new SqlDataAdapter[] { ProcessDAO.adapterChangeReason, ProcessDAO.adapterTransition, ProcessDAO.adapterState };
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (cn != null)
+            if (ProcessDAO.cn != null)
             {
-                cn.Close();
+               ProcessDAO.cn.Close();
             }
         }
-
-        private void dataTransitionGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void buttonSave_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand("Select * from Transition", cn);
-                    adapterTransition.SelectCommand = command;
-                    SqlCommandBuilder cb = new SqlCommandBuilder(adapterTransition);
-                    Validate();
-                    dataTransitionGridView.EndEdit();
-                    adapterTransition.Update(ds.Tables[1]);
+                    ProcessDAO.saveProcesData();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
-
-        }
-
-        private void dataReasonGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                try
-                {
-                    SqlCommand command = new SqlCommand("Select * from ChangeReason", cn);
-                    adapterChangeReason.SelectCommand = command;
-                    SqlCommandBuilder cb = new SqlCommandBuilder(adapterChangeReason);
-                    Validate();
-                    dataReasonGridView.EndEdit();
-                    adapterChangeReason.Update(ds.Tables[2]);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-    }
+        }           
+   }
 
 }

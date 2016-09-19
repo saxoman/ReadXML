@@ -37,6 +37,7 @@
             this.dataTransitionGridView = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataStateGridView = new System.Windows.Forms.DataGridView();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataReasonGridView)).BeginInit();
@@ -48,7 +49,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 581);
+            this.button1.Location = new System.Drawing.Point(4, 584);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 31);
             this.button1.TabIndex = 0;
@@ -61,9 +62,9 @@
             this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 467);
+            this.listBox1.Location = new System.Drawing.Point(4, 470);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(775, 108);
+            this.listBox1.Size = new System.Drawing.Size(796, 108);
             this.listBox1.TabIndex = 1;
             // 
             // tabControl1
@@ -99,7 +100,6 @@
             this.dataReasonGridView.Name = "dataReasonGridView";
             this.dataReasonGridView.Size = new System.Drawing.Size(800, 377);
             this.dataReasonGridView.TabIndex = 0;
-            this.dataReasonGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataReasonGridView_CellValueChanged);
             // 
             // tabPage2
             // 
@@ -122,7 +122,7 @@
             this.dataTransitionGridView.Name = "dataTransitionGridView";
             this.dataTransitionGridView.Size = new System.Drawing.Size(800, 377);
             this.dataTransitionGridView.TabIndex = 0;
-            this.dataTransitionGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataTransitionGridView_CellValueChanged);
+            //this.dataTransitionGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataTransitionGridView_CellValueChanged);
             // 
             // tabPage3
             // 
@@ -144,13 +144,23 @@
             this.dataStateGridView.Name = "dataStateGridView";
             this.dataStateGridView.Size = new System.Drawing.Size(800, 377);
             this.dataStateGridView.TabIndex = 0;
-            this.dataStateGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataStateGridView_CellValueChanged);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(4, 440);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(186, 24);
+            this.buttonSave.TabIndex = 3;
+            this.buttonSave.Text = "Save data";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 624);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
@@ -180,6 +190,7 @@
         private System.Windows.Forms.DataGridView dataReasonGridView;
         private System.Windows.Forms.DataGridView dataTransitionGridView;
         private System.Windows.Forms.DataGridView dataStateGridView;
+        private System.Windows.Forms.Button buttonSave;
     }
 }
 

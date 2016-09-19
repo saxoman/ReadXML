@@ -1,9 +1,9 @@
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\bin\Debug\ReadXML.exe.config
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.csprojResolveAssemblyReference.cache
-c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.Form1.resources
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.Properties.Resources.resources
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.csproj.GenerateResource.Cache
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\bin\Debug\ReadXML.exe
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\bin\Debug\ReadXML.pdb
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.exe
 c:\users\win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.pdb
+C:\Users\Win7\documents\visual studio 2015\Projects\Vezbe\ReadXML\ReadXML\obj\Debug\ReadXML.Form1.resources
