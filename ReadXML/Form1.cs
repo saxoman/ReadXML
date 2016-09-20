@@ -153,13 +153,42 @@ namespace ReadXML
                 try
                 {
                     ProcessDAO.saveProcesData();
+                    DataSet ds = ProcessDAO.getProcesData();
+                    dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
-        }           
-   }
+        }
+
+        private void dataReasonGridView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip m = new ContextMenuStrip();
+                m.Items.Add("Delete");
+                int currentMouseOverRow = dataReasonGridView.HitTest(e.X, e.Y).RowIndex;
+                m.Show(dataReasonGridView, new Point(e.X, e.Y));
+                m.ItemClicked += new ToolStripItemClickedEventHandler(
+                contexMenuuu_ItemClicked);
+            }
+        }
+        void contexMenuuu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem items = e.ClickedItem;
+            foreach (DataGridViewCell oneCell in dataReasonGridView.SelectedCells)
+            {
+                if (oneCell.Selected)
+                {
+                    dataReasonGridView.Rows.RemoveAt(oneCell.RowIndex);
+                    ProcessDAO.saveProcesData();
+                    dataReasonGridView.Update();
+                }
+            }
+
+        }
+    }
 
 }

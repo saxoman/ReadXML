@@ -100,6 +100,7 @@
             this.dataReasonGridView.Name = "dataReasonGridView";
             this.dataReasonGridView.Size = new System.Drawing.Size(800, 377);
             this.dataReasonGridView.TabIndex = 0;
+            this.dataReasonGridView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataReasonGridView_MouseClick);
             // 
             // tabPage2
             // 
@@ -122,7 +123,6 @@
             this.dataTransitionGridView.Name = "dataTransitionGridView";
             this.dataTransitionGridView.Size = new System.Drawing.Size(800, 377);
             this.dataTransitionGridView.TabIndex = 0;
-            //this.dataTransitionGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataTransitionGridView_CellValueChanged);
             // 
             // tabPage3
             // 
