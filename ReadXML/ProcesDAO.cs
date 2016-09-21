@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace ReadXML
 {
-    class ProcesDAO
+   public class ProcesDAO
     {
         public  SqlDataAdapter adapterState { get; set; }
         public  SqlDataAdapter adapterTransition { get; set; }

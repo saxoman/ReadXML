@@ -9,62 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-//using ReadXML;
+using ReadXML;
 
 namespace ReadXML
 {
-    
 
     public partial class Form1 : Form
     {
-        
         public DataGridView[] dgv;
-        public static class ProcessDAO
-        {
-            public static SqlDataAdapter adapterState { get; set; }
-            public static SqlDataAdapter adapterTransition { get; set; }
-            public static SqlDataAdapter adapterChangeReason { get; set; }
-            public static SqlCommandBuilder builder { get; set; }
-            public static DataSet ds { get; set; }
-            public static SqlConnection cn = new SqlConnection("Data Source=WIN7-PC\\SQLEXPRESS; Initial Catalog=RetailDeliveryMainALZDB;Integrated Security=True");
-            public static SqlDataAdapter[] adapter_array;
-
-            public static DataSet getProcesData()
-            {
-                
-                cn.Open();
-                adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
-                adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
-                adapterState = new SqlDataAdapter("Select * from state", cn);
-
-                builder = new SqlCommandBuilder(adapterState);
-                ds = new DataSet();
-
-                adapterChangeReason.Fill(ds, "ChangeReason");
-                adapterTransition.Fill(ds, "Transition");
-                adapterState.Fill(ds, "State");
-
-                
-                return ds;
-            }
-            public static void saveProcesData()
-            {
-                SqlCommand sqlUpdateCommand = new SqlCommand();
-                sqlUpdateCommand.Connection = cn;
-                sqlUpdateCommand.CommandText = "UPDATE ChangeReason SET ShortName = @ShortName, Description = @Description  WHERE ChangeReasonID = @oldChangeReasonID";
-                SqlParameter parameter = sqlUpdateCommand.Parameters.Add(
-                "@oldChangeReasonID", SqlDbType.Int, 5, "ChangeReasonID");
-                parameter.SourceVersion = DataRowVersion.Original;
-
-                sqlUpdateCommand.Parameters.Add("@ShortName", SqlDbType.VarChar, 50, "ShortName");
-                sqlUpdateCommand.Parameters.Add("@Description", SqlDbType.VarChar, 50, "Description");
-
-                adapterChangeReason.UpdateCommand = sqlUpdateCommand;
-                adapterChangeReason.Update(ds.Tables[0]);
-            }
-        }
-
-
+        public ProcesDAO pd;
+       
         public class State
         {
             public string ID { get; set; }
@@ -136,19 +90,18 @@ namespace ReadXML
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DataSet ds= ProcessDAO.getProcesData();
+            pd= new ProcesDAO();
+            DataSet ds= pd.getProcesData();
             dataStateGridView.DataSource = ds.Tables["State"];
             dataTransitionGridView.DataSource = ds.Tables["Transition"];
             dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
-            dgv = new DataGridView[] { dataReasonGridView, dataTransitionGridView, dataStateGridView };
-            ProcessDAO.adapter_array = new SqlDataAdapter[] { ProcessDAO.adapterChangeReason, ProcessDAO.adapterTransition, ProcessDAO.adapterState };
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (ProcessDAO.cn != null)
+            if (pd.cn != null)
             {
-               ProcessDAO.cn.Close();
+               pd.cn.Close();
             }
         }
         private void buttonSave_Click(object sender, EventArgs e)
@@ -157,9 +110,7 @@ namespace ReadXML
             {
                 try
                 {
-                    ProcessDAO.saveProcesData();
-                    
-                   
+                    pd.saveProcesData(); 
                 }
                 catch (Exception ex)
                 {
@@ -188,7 +139,7 @@ namespace ReadXML
                 if (oneCell.Selected)
                 {
                     dataReasonGridView.Rows.RemoveAt(oneCell.RowIndex);
-                    ProcessDAO.saveProcesData();
+                    pd.saveProcesData();
                     dataReasonGridView.Update();
                 }
             }
