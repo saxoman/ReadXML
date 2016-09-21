@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+//using ReadXML;
 
 namespace ReadXML
 {
@@ -16,6 +17,7 @@ namespace ReadXML
 
     public partial class Form1 : Form
     {
+        
         public DataGridView[] dgv;
         public static class ProcessDAO
         {
@@ -29,6 +31,7 @@ namespace ReadXML
 
             public static DataSet getProcesData()
             {
+                
                 cn.Open();
                 adapterChangeReason = new SqlDataAdapter("Select * from ChangeReason", cn);
                 adapterTransition = new SqlDataAdapter("Select * from Transition", cn);
@@ -41,21 +44,23 @@ namespace ReadXML
                 adapterTransition.Fill(ds, "Transition");
                 adapterState.Fill(ds, "State");
 
-                cn.Close();
+                
                 return ds;
-
             }
             public static void saveProcesData()
             {
-                int i = 0;
-                foreach (SqlDataAdapter sa in adapter_array)
-                {  
-                    SqlCommandBuilder builder = new SqlCommandBuilder(sa);
-                    sa.UpdateCommand = builder.GetUpdateCommand();
-                    sa.Update(ds.Tables[i]);   
-                    i++;
-                }
-                ds.AcceptChanges();
+                SqlCommand sqlUpdateCommand = new SqlCommand();
+                sqlUpdateCommand.Connection = cn;
+                sqlUpdateCommand.CommandText = "UPDATE ChangeReason SET ShortName = @ShortName, Description = @Description  WHERE ChangeReasonID = @oldChangeReasonID";
+                SqlParameter parameter = sqlUpdateCommand.Parameters.Add(
+                "@oldChangeReasonID", SqlDbType.Int, 5, "ChangeReasonID");
+                parameter.SourceVersion = DataRowVersion.Original;
+
+                sqlUpdateCommand.Parameters.Add("@ShortName", SqlDbType.VarChar, 50, "ShortName");
+                sqlUpdateCommand.Parameters.Add("@Description", SqlDbType.VarChar, 50, "Description");
+
+                adapterChangeReason.UpdateCommand = sqlUpdateCommand;
+                adapterChangeReason.Update(ds.Tables[0]);
             }
         }
 
@@ -153,8 +158,8 @@ namespace ReadXML
                 try
                 {
                     ProcessDAO.saveProcesData();
-                    DataSet ds = ProcessDAO.getProcesData();
-                    dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
+                    
+                   
                 }
                 catch (Exception ex)
                 {
