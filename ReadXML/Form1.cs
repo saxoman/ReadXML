@@ -16,8 +16,8 @@ namespace ReadXML
 
     public partial class Form1 : Form
     {
-        public DataGridView[] dgv;
         public ProcesDAO pd;
+        public DataSet ds;
        
         public class State
         {
@@ -91,7 +91,7 @@ namespace ReadXML
         private void Form1_Load(object sender, EventArgs e)
         {
             pd= new ProcesDAO();
-            DataSet ds= pd.getProcesData();
+            ds= pd.getProcesData();
             dataStateGridView.DataSource = ds.Tables["State"];
             dataTransitionGridView.DataSource = ds.Tables["Transition"];
             dataReasonGridView.DataSource = ds.Tables["ChangeReason"];
@@ -106,11 +106,12 @@ namespace ReadXML
         }
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
+           if (MessageBox.Show("Da li želite da sačuvate izmene?", "Sačuvati?", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
+               
                 try
                 {
-                    pd.saveProcesData(); 
+                    pd.saveProcesData(ds); 
                 }
                 catch (Exception ex)
                 {
@@ -139,7 +140,7 @@ namespace ReadXML
                 if (oneCell.Selected)
                 {
                     dataReasonGridView.Rows.RemoveAt(oneCell.RowIndex);
-                    pd.saveProcesData();
+                    pd.saveProcesData(ds);
                     dataReasonGridView.Update();
                 }
             }
