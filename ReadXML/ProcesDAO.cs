@@ -66,7 +66,6 @@ namespace ReadXML
             parameter.SourceVersion = DataRowVersion.Original;
             adapterChangeReason.DeleteCommand = deleteCommand;
 
-
             adapterChangeReason.Update(dataset.Tables[0]);
         }
 

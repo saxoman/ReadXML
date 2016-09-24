@@ -16,7 +16,7 @@ namespace ReadXML
 
     public partial class Form1 : Form
     {
-        public ProcesDAO pd;
+        public ProcesDAO1 pd;
         public DataSet ds;
        
         public class State
@@ -90,7 +90,7 @@ namespace ReadXML
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            pd= new ProcesDAO();
+            pd= new ProcesDAO1();
             ds= pd.getProcesData();
             dataStateGridView.DataSource = ds.Tables["State"];
             dataTransitionGridView.DataSource = ds.Tables["Transition"];
@@ -111,7 +111,8 @@ namespace ReadXML
                
                 try
                 {
-                    pd.saveProcesData(ds); 
+                    pd.saveProcesData(ds);
+                    infoBox("izvršili izmene");
                 }
                 catch (Exception ex)
                 {
@@ -141,10 +142,15 @@ namespace ReadXML
                 {
                     dataReasonGridView.Rows.RemoveAt(oneCell.RowIndex);
                     pd.saveProcesData(ds);
+                    infoBox("izbrisali zapis");
                     dataReasonGridView.Update();
                 }
             }
 
+        }
+        private void infoBox(string info)
+        {
+            MessageBox.Show("Uspešno ste "+info, "Info", MessageBoxButtons.OK);
         }
     }
 
